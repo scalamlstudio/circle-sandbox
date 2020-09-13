@@ -3,23 +3,25 @@
 local Square = {}
 
 function Square:new(world, config)
-    local square = config
-    square.a = true
-    square.t = 0
-    square.s = square.s or 600
-    function square:update(dt)
-        local distance = math.sqrt(square.vx ^ 2 + square.vy ^ 2)
-        square.x = square.x + square.vx * square.s / distance * dt
-        square.y = square.y + square.vy * square.s / distance * dt
-        square.t = square.t + dt
-        if square.t > 1 then
-            square.a = false
+    local object = Object:new(world, config)
+    object.alias = object.alias or 2
+    object.shape = love.physics.newRectangleShape(object.r, object.r)
+    object.fixture = love.physics.newFixture(object.body, object.shape)
+    object.fixture:setCategory(object.alias)
+    object.fixture:setMask(object.alias)
+    function object:draw()
+        if object.alias == 4 then
+            love.graphics.setColor(0.3, 1.0, 0.3)
+        else
+            love.graphics.setColor(0.9,
+                0.9 * object.hp / object.maxhp,
+                0.9 * object.hp / object.maxhp)
         end
+        love.graphics.rectangle("fill",
+            object.x - object.r / 2, object.y - object.r / 2,
+            object.r, object.r)
     end
-    function square:draw()
-        love.graphics.rectangle("fill", square.x, square.y, 5, 5)
-    end
-    return square
+    return object
 end
 
 return Square

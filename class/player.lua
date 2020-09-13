@@ -9,12 +9,12 @@ function Player:new(name)
     local key2 = tostring(love.math.random(1000000, 9999999))
     local key3 = tostring(love.math.random(1000000, 9999999))
     player.id = key1 + key2 + key3
-    player.name = name
+    player.name = name or player.id
     player.chars = {}
     player.stash = {}
 
     function player:addChar(char)
-        player.chars[#player.chars + 1] = char
+        table.insert(player.chars, char)
     end
 
     return player
