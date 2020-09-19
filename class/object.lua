@@ -44,16 +44,20 @@ function Object:new(world, config)
             object.t = object.t - dt
         elseif object.o == "enem" then
             local char = object.world:findChar()
-            if char.x and char.y then
-                local dx = char.x - object.x
-                local dy = char.y - object.y
-                local distance = math.sqrt(dx ^ 2 + dy ^ 2)
-                dx = object.s * dx / distance
-                dy = object.s * dy / distance
-                object.body:setLinearVelocity(dx, dy)
-                object.x = object.body:getX()
-                object.y = object.body:getY()
-                object.body:setPosition(object.x, object.y)
+            local dx = char.x - object.x
+            local dy = char.y - object.y
+            local distance = math.sqrt(dx ^ 2 + dy ^ 2)
+            dx = object.s * dx / distance
+            dy = object.s * dy / distance
+            object.body:setLinearVelocity(dx, dy)
+            object.x = object.body:getX()
+            object.y = object.body:getY()
+            if object.etype == "range" and math.random() > 0.98 then
+                local conf = {
+                    o="proj", x=object.x, y=object.y,
+                    dx=dx, dy=dy, r=3, s=200}
+                local newobj = Triangle:new(object.world, conf)
+                object.world:addObj(newobj)
             end
         end
         if (object.o ~= "play" and object.t <= 0) or object.hp <= 0 then

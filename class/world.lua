@@ -70,6 +70,16 @@ function World:new(config)
                 table.insert(world.objs, obj)
             end
         end
+        -- enemies range
+        for i = 1, 5 do
+            local nx = love.math.random(-1000, 1000)
+            local ny = love.math.random(-1000, 1000)
+            if nx^2 + ny^2 > 1000 then
+                local conf = {o="enem",x=nx, y=ny, s=100, r=12, etype="range", hp=20, t=1.427e8}
+                local obj = Triangle:new(world, conf)
+                table.insert(world.objs, obj)
+            end
+        end
     end
     function world:draw()
         for i = 1, #world.objs do

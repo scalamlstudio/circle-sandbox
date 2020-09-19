@@ -12,4 +12,14 @@
  - Have a character selection stage
  - Have a world selection stage
  - World Design with Boundary and Enemy
- - Enemy drop world map, item, skill
+ - Enemy drop world map, module, chip
+ - Char can equip up to 5 modules
+
+### Todo
+
+ - Enemy System with Range / Melee Enemies
+ - Item System with Map / Module / Chip
+ - User Carry Items with Different Stack Size
+ - User Equip Modules with Module Type
+ - Home Base with Item Storage
+ - Crafting System
