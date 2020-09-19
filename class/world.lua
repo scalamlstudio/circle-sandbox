@@ -65,8 +65,8 @@ function World:new(config)
             local nx = love.math.random(-1000, 1000)
             local ny = love.math.random(-1000, 1000)
             if nx^2 + ny^2 > 1000 then
-                local conf = {o="enem",x=nx, y=ny, s=100, r=8, hp=10, t=1.427e8}
-                local obj = Triangle:new(world, conf)
+                local conf = {x=nx, y=ny, id=1}
+                local obj = Enemy:get(world, conf)
                 table.insert(world.objs, obj)
             end
         end
@@ -75,8 +75,8 @@ function World:new(config)
             local nx = love.math.random(-1000, 1000)
             local ny = love.math.random(-1000, 1000)
             if nx^2 + ny^2 > 1000 then
-                local conf = {o="enem",x=nx, y=ny, s=100, r=12, etype="range", hp=20, t=1.427e8}
-                local obj = Triangle:new(world, conf)
+                local conf = {x=nx, y=ny, id=2}
+                local obj = Enemy:get(world, conf)
                 table.insert(world.objs, obj)
             end
         end
