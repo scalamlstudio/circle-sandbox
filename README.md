@@ -17,7 +17,7 @@
 
 ### Todo
 
- - Enemy System with Range / Melee Enemies
+ - World System with Obstacle and Enemy
  - Item System with Map / Module / Chip
  - User Carry Items with Different Stack Size
  - User Equip Modules with Module Type

@@ -10,8 +10,8 @@ function Square:new(world, config)
     object.fixture:setCategory(object.alias)
     object.fixture:setMask(object.alias)
     function object:draw()
-        if object.alias == 4 then
-            love.graphics.setColor(0.3, 1.0, 0.3)
+        if object.hp > 1e7 then
+            love.graphics.setColor(1.0, 0.7, 0.2)
         else
             love.graphics.setColor(0.9,
                 0.9 * object.hp / object.maxhp,

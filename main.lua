@@ -12,6 +12,7 @@ Config = require("class/config")
 Object = require("class/object")
 Circle = require("class/circle")
 Square = require("class/square")
+Hexagon = require("class/hexagon")
 Triangle = require("class/triangle")
 
 -- Init Player
@@ -48,6 +49,7 @@ function love.update(dt)
         char:resetPosition()
         world:clear()
         world:initLevel()
+        Camera:setObj(world, char)
     end
     world:update(dt)
     Physics:update(dt)
@@ -91,6 +93,8 @@ function beginContact(a, b, coll)
         bobj.hp = bobj.hp - 1
     end
     if aobj.alias == 4 and bobj.o == "play" then
+        Restart = true
+    elseif bobj.alias == 4 and aobj.o == "play" then
         Restart = true
     end
 end

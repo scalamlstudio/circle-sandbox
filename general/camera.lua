@@ -55,6 +55,10 @@ function Camera:follow(world, obj)
     Camera.vy = Camera.vy * Camera.sticky + (obj.y - world.h / 2 - Camera.y) * (1 - Camera.sticky)
 end
 
+function Camera:setObj(world, obj)
+    Camera:setPosition(obj.x - world.w / 2, obj.y - world.h / 2)
+end
+
 function Camera:vibrate(vibration)
     Camera.vibration = vibration
 end

@@ -1,9 +1,11 @@
 -- World
 
 local World = {}
-
-function World:new(config)
-    local world = config or {}
+local worldmap = {}
+worldmap[1] = {}
+worldmap[2] = {}
+function World:new(conf)
+    local world = conf or {}
     world.w = love.graphics.getWidth()
     world.h = love.graphics.getHeight()
     world.objs = world.objs or {}
@@ -44,13 +46,22 @@ function World:new(config)
         return world.char
     end
     function world:initLevel()
-        -- target
+        -- items
         local nx = love.math.random(-200, 200)
         local ny = love.math.random(-200, 200)
-        local conf = {o="obst",x=nx, y=ny, r=100, t=300, hp=1.427e8, alias=4}
-        local obj = Square:new(world, conf)
+        local conf = {o="obst",x=nx, y=ny, r=50, hp=1.427e8, t=300}
+        local obj = Hexagon:new(world, conf)
         table.insert(world.objs, obj)
         -- obstables
+        for i = 1, 10 do
+            local nx = love.math.random(-1000, 1000)
+            local ny = love.math.random(-1000, 1000)
+            if nx^2 + ny^2 > 100000 then
+                local conf = {o="obst", x=nx, y=ny, id=400, hp=1.427e8, t=1.427e8}
+                local obj = Square:new(world, conf)
+                table.insert(world.objs, obj)
+            end
+        end
         for i = 1, 100 do
             local nx = love.math.random(-1000, 1000)
             local ny = love.math.random(-1000, 1000)
@@ -70,7 +81,6 @@ function World:new(config)
                 table.insert(world.objs, obj)
             end
         end
-        -- enemies range
         for i = 1, 5 do
             local nx = love.math.random(-1000, 1000)
             local ny = love.math.random(-1000, 1000)
