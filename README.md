@@ -22,4 +22,5 @@
  - User Carry Items with Different Stack Size
  - User Equip Modules with Module Type
  - Home Base with Item Storage
+ - World Event and Object Effect
  - Crafting System

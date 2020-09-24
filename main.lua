@@ -8,6 +8,7 @@ World = require("class/world")
 Player = require("class/player")
 Enemy = require("class/enemy")
 Char = require("class/char")
+Obstacle = require("class/obstacle")
 Config = require("class/config")
 Object = require("class/object")
 Circle = require("class/circle")
@@ -25,7 +26,7 @@ end
 -- Load World
 local StartTime = math.floor(love.timer.getTime() * 10)
 local panel = Panel:new("Time: 0", 10, 10)
-local world = World:new()
+local world = World:new({id=2})
 local char = {}
 
 function love.load()
@@ -48,6 +49,7 @@ function love.update(dt)
         Restart = false
         char:resetPosition()
         world:clear()
+        world.id = love.math.random(1, 2)
         world:initLevel()
         Camera:setObj(world, char)
     end
@@ -58,8 +60,8 @@ function love.update(dt)
         "  FPS:" .. tostring(love.timer.getFPS()))
     panel:add("Window - W:" .. tostring(world.w) ..
         "  H:" .. tostring(world.h))
-    panel:add("Circle - X:" .. tostring(char.x) ..
-        "  Y:" .. tostring(char.y))
+    panel:add("Circle - X:" .. tostring(char.x) .. "  Y:" .. tostring(char.y) ..
+        "  HP:" .. tostring(char.hp))
     panel:add("Obj Count:" .. tostring(#world.objs))
 
     Camera:follow(world, char)

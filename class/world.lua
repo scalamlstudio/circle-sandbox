@@ -2,10 +2,11 @@
 
 local World = {}
 local worldmap = {}
-worldmap[1] = {}
-worldmap[2] = {}
+worldmap[1] = require("world/w1")
+worldmap[2] = require("world/w2")
 function World:new(conf)
     local world = conf or {}
+    world.id = world.id or 1
     world.w = love.graphics.getWidth()
     world.h = love.graphics.getHeight()
     world.objs = world.objs or {}
@@ -52,42 +53,28 @@ function World:new(conf)
         local conf = {o="obst",x=nx, y=ny, r=50, hp=1.427e8, t=300}
         local obj = Hexagon:new(world, conf)
         table.insert(world.objs, obj)
-        -- obstables
-        for i = 1, 10 do
-            local nx = love.math.random(-1000, 1000)
-            local ny = love.math.random(-1000, 1000)
-            if nx^2 + ny^2 > 100000 then
-                local conf = {o="obst", x=nx, y=ny, id=400, hp=1.427e8, t=1.427e8}
-                local obj = Square:new(world, conf)
-                table.insert(world.objs, obj)
-            end
-        end
-        for i = 1, 100 do
-            local nx = love.math.random(-1000, 1000)
-            local ny = love.math.random(-1000, 1000)
-            if nx^2 + ny^2 > 100000 then
-                local conf = {o="obst",x=nx, y=ny, r=200, hp=10, t=1.427e8}
-                local obj = Square:new(world, conf)
-                table.insert(world.objs, obj)
+        -- obstacles
+        for k, v in pairs(worldmap[world.id].obstacle) do
+            for i = 1, v do
+                local nx = love.math.random(-1000, 1000)
+                local ny = love.math.random(-1000, 1000)
+                if nx^2 + ny^2 > 100000 then
+                    local conf = {o="obst", x=nx, y=ny, id=k}
+                    local obj = Obstacle:get(world, conf)
+                    table.insert(world.objs, obj)
+                end
             end
         end
         -- enemies
-        for i = 1, 10 do
-            local nx = love.math.random(-1000, 1000)
-            local ny = love.math.random(-1000, 1000)
-            if nx^2 + ny^2 > 1000 then
-                local conf = {x=nx, y=ny, id=1}
-                local obj = Enemy:get(world, conf)
-                table.insert(world.objs, obj)
-            end
-        end
-        for i = 1, 5 do
-            local nx = love.math.random(-1000, 1000)
-            local ny = love.math.random(-1000, 1000)
-            if nx^2 + ny^2 > 1000 then
-                local conf = {x=nx, y=ny, id=2}
-                local obj = Enemy:get(world, conf)
-                table.insert(world.objs, obj)
+        for k, v in pairs(worldmap[world.id].enemy) do
+            for i = 1, v do
+                local nx = love.math.random(-1000, 1000)
+                local ny = love.math.random(-1000, 1000)
+                if nx^2 + ny^2 > 1000 then
+                    local conf = {x=nx, y=ny, id=k}
+                    local obj = Enemy:get(world, conf)
+                    table.insert(world.objs, obj)
+                end
             end
         end
     end

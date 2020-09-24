@@ -1,11 +1,11 @@
 # DESIGN DOC
 
 ```
-Enemy ----+            +-- Circle
+Player ---+            +-- Circle
           |            |
-          |            +-- Square
-Obstacle -+-- Object --|
-          |            +-- Triangle
+Enemy ----+            +-- Square
+          +-- Object --+
+Obstacle -+            +-- Triangle
           |            |
 Item -----+            +-- Hexagon
 ```
