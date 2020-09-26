@@ -13,9 +13,12 @@ function Config:newObj(config)
     config.m = config.m or 1 -- mass
     config.hp = config.hp or 1 -- health point
     config.maxhp = config.hp or 1 -- max health point
-    -- projectile or obstacle or player or enemy
-    config.o = config.o or "proj" -- object type
-    config.bodytype = "dynamic"
+    config.o = config.o or "obst" -- object type
+    if config.o == "obst" or config.o == "port" then
+        config.bodytype = "static"
+    else
+        config.bodytype = "dynamic"
+    end
     return config
 end
 
