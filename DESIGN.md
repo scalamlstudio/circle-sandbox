@@ -1,11 +1,15 @@
 # DESIGN DOC
 
 ```
-Player ---+            +-- Circle
-          |            |
-Enemy ----+            +-- Square
-          +-- Object --+
-Obstacle -+            +-- Triangle
-          |            |
-Item -----+            +-- Hexagon
+Agent ------+-- Object --+-- Circle
+            |     |      |
+Enemy ------+     |      +-- Square
+            |   Config   |
+Obstacle ---+            +-- Triangle
+            |            |
+Item -------+            +-- Hexagon
+            |
+Projectile -+
+            |
+Portal -----+
 ```

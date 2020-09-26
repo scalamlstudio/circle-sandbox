@@ -18,6 +18,10 @@ function World:new(conf)
         local objsize = #world.objs
         for i = 1, objsize do
             world.objs[i]:update(dt)
+            if world.objs[i].t <= 0 or world.objs[i].hp <= 0 then
+                world.objs[i].a = false
+                world.objs[i].body:destroy()
+            end
         end
 
         local newobjs = {}
@@ -50,8 +54,8 @@ function World:new(conf)
         -- items
         local nx = love.math.random(-200, 200)
         local ny = love.math.random(-200, 200)
-        local conf = {o="obst",x=nx, y=ny, r=50, hp=1.427e8, t=300}
-        local obj = Hexagon:new(world, conf)
+        local conf = {id=1, x=nx, y=ny}
+        local obj = Portal:get(world, conf)
         table.insert(world.objs, obj)
         -- obstacles
         for k, v in pairs(worldmap[world.id].obstacle) do

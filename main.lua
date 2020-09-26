@@ -6,15 +6,21 @@ Panel = require("general/panel")
 Physics = love.physics.newWorld(0, 0, true)
 World = require("class/world")
 Player = require("class/player")
-Enemy = require("class/enemy")
 Char = require("class/char")
-Obstacle = require("class/obstacle")
-Config = require("class/config")
 Object = require("class/object")
-Circle = require("class/circle")
-Square = require("class/square")
-Hexagon = require("class/hexagon")
-Triangle = require("class/triangle")
+Config = require("class/config")
+-- Entity
+Agent = require("class/entity/agent")
+Enemy = require("class/entity/enemy")
+Obstacle = require("class/entity/obstacle")
+Projectile = require("class/entity/projectile")
+Item = require("class/entity/item")
+Portal = require("class/entity/portal")
+-- Shape
+Circle = require("class/shape/circle")
+Square = require("class/shape/square")
+Hexagon = require("class/shape/hexagon")
+Triangle = require("class/shape/triangle")
 
 -- Init Player
 local player = love.filesystem.getInfo('player')
@@ -27,7 +33,7 @@ end
 local StartTime = math.floor(love.timer.getTime() * 10)
 local panel = Panel:new("Time: 0", 10, 10)
 local world = World:new({id=2})
-local char = {}
+local agent = {}
 
 function love.load()
     love.window.setTitle("TEST")
@@ -36,8 +42,8 @@ function love.load()
     Physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
     world:initLevel()
     -- Select Char
-    char = Circle:new(world, player.chars[1])
-    world:addObj(char)
+    agent = Agent:get(world, player.chars[1])
+    world:addObj(agent)
 
     Restart = false
     text = ""
@@ -47,11 +53,11 @@ end
 function love.update(dt)
     if Restart then
         Restart = false
-        char:resetPosition()
+        agent:resetPosition()
         world:clear()
         world.id = love.math.random(1, 2)
         world:initLevel()
-        Camera:setObj(world, char)
+        Camera:setObj(world, agent)
     end
     world:update(dt)
     Physics:update(dt)
@@ -60,11 +66,11 @@ function love.update(dt)
         "  FPS:" .. tostring(love.timer.getFPS()))
     panel:add("Window - W:" .. tostring(world.w) ..
         "  H:" .. tostring(world.h))
-    panel:add("Circle - X:" .. tostring(char.x) .. "  Y:" .. tostring(char.y) ..
-        "  HP:" .. tostring(char.hp))
+    panel:add("Circle - X:" .. tostring(agent.x) .. "  Y:" .. tostring(agent.y) ..
+        "  HP:" .. tostring(agent.hp))
     panel:add("Obj Count:" .. tostring(#world.objs))
 
-    Camera:follow(world, char)
+    Camera:follow(world, agent)
     Camera:update(dt)
 
     if string.len(text) > 768 then    -- cleanup when 'text' gets too long
@@ -94,9 +100,9 @@ function beginContact(a, b, coll)
         aobj.hp = aobj.hp - 1
         bobj.hp = bobj.hp - 1
     end
-    if aobj.alias == 4 and bobj.o == "play" then
+    if aobj.o == "port" and bobj.o == "play" then
         Restart = true
-    elseif bobj.alias == 4 and aobj.o == "play" then
+    elseif bobj.o == "port" and aobj.o == "play" then
         Restart = true
     end
 end
