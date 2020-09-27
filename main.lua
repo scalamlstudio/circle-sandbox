@@ -1,14 +1,14 @@
 -- Main
-
 Camera = require("general/camera")
 Panel = require("general/panel")
-
-Physics = love.physics.newWorld(0, 0, true)
+Physics = require("general/physics")
+-- Class
 World = require("class/world")
 Player = require("class/player")
 Char = require("class/char")
 Object = require("class/object")
 Config = require("class/config")
+Shader = require("class/shader")
 -- Entity
 Agent = require("class/entity/agent")
 Enemy = require("class/entity/enemy")
@@ -39,7 +39,8 @@ function love.load()
     love.window.setTitle("TEST")
     love.graphics.setBackgroundColor(0, 0, 0)
 
-    Physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
+    Physics:load()
+    Shader:load()
     world:initLevel()
     -- Select Char
     agent = Agent:get(world, player.chars[1])
@@ -47,7 +48,6 @@ function love.load()
 
     Restart = false
     text = ""
-    persisting = 0
 end
 
 function love.update(dt)
@@ -79,41 +79,18 @@ function love.update(dt)
 end
 
 function love.draw()
+    Shader:set({screen={world.w, world.h}})
     Camera:set()
     world:draw()
     Camera:unset()
-    panel:draw()
+    Shader:unset()
 
+    panel:draw()
     love.graphics.print(text, 10, 100)
 end
 
-----
-
-function beginContact(a, b, coll)
-    x, y = coll:getNormal()
-    local aobj = a:getBody():getUserData()
-    local bobj = b:getBody():getUserData()
-    text = text.."\n"..aobj.o..
-        " colliding with "..bobj.o..
-        " with a vector normal of: "..x..", "..y
-    if aobj.o == "proj" or bobj.o == "proj" then
-        aobj.hp = aobj.hp - 1
-        bobj.hp = bobj.hp - 1
-    end
-    if aobj.o == "port" and bobj.o == "play" then
-        Restart = true
-    elseif bobj.o == "port" and aobj.o == "play" then
-        Restart = true
-    end
-end
-
-function endContact(a, b, coll)
-    persisting = 0
-end
-
-function preSolve(a, b, coll)
-    persisting = persisting + 1    -- keep track of how many updates they've been touching for
-end
-
-function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+function love.keypressed(key, scancode, isrepeat)
+   if key == "escape" then
+      love.event.quit()
+   end
 end

@@ -64,10 +64,7 @@ function Camera:vibrate(vibration)
 end
 
 function Camera:update(dt)
-    Camera.vibration = Camera.vibration - dt
-    if Camera.vibration < 0 then
-        Camera.vibration = 0
-    end
+    Camera.vibration = math.max(0, Camera.vibration - dt)
 end
 
 return Camera

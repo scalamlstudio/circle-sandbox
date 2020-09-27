@@ -5,7 +5,7 @@ local Object = {}
 function Object:new(world, config)
     local object = Config:newObj(config)
     object.world = world
-    object.body = love.physics.newBody(Physics, object.x, object.y, object.bodytype)
+    object.body = love.physics.newBody(Physics.world, object.x, object.y, object.bodytype)
     object.body:setMass(object.m)
     object.body:setUserData(object)
     if object.o == "proj" then
