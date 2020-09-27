@@ -21,6 +21,11 @@ function Projectile:get(world, conf)
         object.y = object.body:getY()
         object.t = object.t - dt
     end
+    function object:handle(event)
+        if event.etype == "hit" then
+            object.hp = object.hp - 1
+        end
+    end
     return object
 end
 

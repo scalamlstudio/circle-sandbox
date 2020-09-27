@@ -14,6 +14,13 @@ function Obstacle:get(world, conf)
     local object = Square:new(world, conf)
     function object:update(dt)
     end
+    function object:handle(event)
+        if event.etype == "hit" then
+            if event.object.o == "proj" then
+                object.hp = object.hp - 1
+            end
+        end
+    end
     return object
 end
 

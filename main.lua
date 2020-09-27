@@ -1,26 +1,5 @@
--- Main
-Camera = require("general/camera")
-Panel = require("general/panel")
-Physics = require("general/physics")
--- Class
-World = require("class/world")
-Player = require("class/player")
-Char = require("class/char")
-Object = require("class/object")
-Config = require("class/config")
-Shader = require("class/shader")
--- Entity
-Agent = require("class/entity/agent")
-Enemy = require("class/entity/enemy")
-Obstacle = require("class/entity/obstacle")
-Projectile = require("class/entity/projectile")
-Item = require("class/entity/item")
-Portal = require("class/entity/portal")
--- Shape
-Circle = require("class/shape/circle")
-Square = require("class/shape/square")
-Hexagon = require("class/shape/hexagon")
-Triangle = require("class/shape/triangle")
+-- -- Main
+require("requirement")
 
 -- Init Player
 local player = love.filesystem.getInfo('player')
@@ -30,13 +9,14 @@ if player == nil then
 end
 
 -- Load World
-local StartTime = math.floor(love.timer.getTime() * 10)
-local panel = Panel:new("Time: 0", 10, 10)
-local world = World:new({id=2})
+local StartTime = math.floor(love.timer.getTime())
+local panel = Panel:new(10, 10)
+local log = Panel:new(10, 100)
+local world = World:new({id=2, log=log})
 local agent = {}
 
 function love.load()
-    love.window.setTitle("TEST")
+    love.window.setTitle("CIRCLE")
     love.graphics.setBackgroundColor(0, 0, 0)
 
     Physics:load()
@@ -47,7 +27,6 @@ function love.load()
     world:addObj(agent)
 
     Restart = false
-    text = ""
 end
 
 function love.update(dt)
@@ -57,25 +36,20 @@ function love.update(dt)
         world:clear()
         world.id = love.math.random(1, 2)
         world:initLevel()
+        -- world:addObj(agent)
         Camera:setObj(world, agent)
     end
     world:update(dt)
     Physics:update(dt)
 
-    panel:update("Time:" .. tostring((math.floor(love.timer.getTime() * 10) - StartTime) / 10.0) ..
-        "  FPS:" .. tostring(love.timer.getFPS()))
-    panel:add("Window - W:" .. tostring(world.w) ..
-        "  H:" .. tostring(world.h))
-    panel:add("Circle - X:" .. tostring(agent.x) .. "  Y:" .. tostring(agent.y) ..
-        "  HP:" .. tostring(agent.hp))
+    panel:update("Time:" .. tostring(math.floor(love.timer.getTime()) - StartTime) .. "  FPS:" .. tostring(love.timer.getFPS()))
+    panel:add("Window - W:" .. tostring(world.w) .. "  H:" .. tostring(world.h))
+    panel:add("Circle - X:" .. tostring(agent.x) .. "  Y:" .. tostring(agent.y) .. "  HP:" .. tostring(agent.hp))
     panel:add("Obj Count:" .. tostring(#world.objs))
+    log:trim()
 
     Camera:follow(world, agent)
     Camera:update(dt)
-
-    if string.len(text) > 768 then    -- cleanup when 'text' gets too long
-        text = ""
-    end
 end
 
 function love.draw()
@@ -84,9 +58,8 @@ function love.draw()
     world:draw()
     Camera:unset()
     Shader:unset()
-
     panel:draw()
-    love.graphics.print(text, 10, 100)
+    log:draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)

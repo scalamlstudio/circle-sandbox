@@ -13,6 +13,7 @@ function Config:newObj(config)
     config.m = config.m or 1 -- mass
     config.hp = config.hp or 1 -- health point
     config.maxhp = config.hp or 1 -- max health point
+    config.alias = config.alias or 3 -- default neutral
     config.o = config.o or "obst" -- object type
     if config.o == "obst" or config.o == "port" then
         config.bodytype = "static"

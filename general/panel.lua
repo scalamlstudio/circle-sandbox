@@ -2,13 +2,13 @@
 
 local Panel = {}
 
-function Panel:new(text, x, y)
-    panel = {}
+function Panel:new(x, y)
+    local panel = {}
 
     panel.width = love.graphics.getWidth()
     panel.height = love.graphics.getHeight()
 
-    panel.text = text
+    panel.text = "DEFAULT TEXT"
     panel.x = x
     panel.y = y
 
@@ -18,6 +18,12 @@ function Panel:new(text, x, y)
 
     function panel:add(newText)
         panel.text = panel.text .."\n" .. newText
+    end
+
+    function panel:trim()
+        if string.len(panel.text) > 100 then -- cleanup when 'text' gets too long
+            panel.text = ""
+        end
     end
 
     function panel:draw()

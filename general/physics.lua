@@ -13,10 +13,8 @@ function beginContact(a, b, coll)
     x, y = coll:getNormal()
     local aobj = a:getBody():getUserData()
     local bobj = b:getBody():getUserData()
-    if aobj.o == "proj" or bobj.o == "proj" then
-        aobj.hp = aobj.hp - 1
-        bobj.hp = bobj.hp - 1
-    end
+    aobj:handle({etype="hit",object=bobj})
+    bobj:handle({etype="hit",object=aobj})
     if aobj.o == "port" and bobj.o == "play" then
         Restart = true
     elseif bobj.o == "port" and aobj.o == "play" then

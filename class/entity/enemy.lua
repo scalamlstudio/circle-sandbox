@@ -7,6 +7,7 @@ enemymap[2] = require("enemy/e2")
 function Enemy:get(world, conf)
     local newconf = enemymap[conf['id']] or enemymap[1]
     newconf.o = "enem"
+    newconf.alias = 2
     for k, v in pairs(newconf) do
         conf[k] = v
     end
@@ -22,9 +23,16 @@ function Enemy:get(world, conf)
         object.x = object.body:getX()
         object.y = object.body:getY()
         if object.etype == "range" and math.random() > 0.98 then
-            local conf = {id=2, x=object.x, y=object.y, dx=dx, dy=dy}
+            local conf = {id=2, alias=2, x=object.x, y=object.y, dx=dx, dy=dy}
             local newobj = Projectile:get(object.world, conf)
             object.world:addObj(newobj)
+        end
+    end
+    function object:handle(event)
+        if event.etype == "hit" then
+            if event.object.alias == 1 and event.object.o == "proj" then
+                object.hp = object.hp - 1
+            end
         end
     end
     return object

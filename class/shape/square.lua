@@ -4,7 +4,7 @@ local Square = {}
 
 function Square:new(world, config)
     local object = Object:new(world, config)
-    object.alias = object.alias or 2
+    object.alias = object.alias or 0
     object.shape = love.physics.newRectangleShape(object.r, object.r)
     object.fixture = love.physics.newFixture(object.body, object.shape)
     object.fixture:setCategory(object.alias)

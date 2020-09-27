@@ -6,6 +6,7 @@ agentmap[1] = {t=1.427e8}
 function Agent:get(world, conf)
     local newconf = agentmap[conf['id']] or agentmap[1]
     newconf.o = "play"
+    newconf.alias = 1
     for k, v in pairs(newconf) do
         conf[k] = v
     end
@@ -24,9 +25,18 @@ function Agent:get(world, conf)
         object.x = object.body:getX()
         object.y = object.body:getY()
         if love.keyboard.isDown('q') then
-            local conf = {id=1, x=object.x, y=object.y, dx=dx, dy=dy}
+            local conf = {id=1, alias=1, x=object.x, y=object.y, dx=dx, dy=dy}
             local newobj = Projectile:get(object.world, conf)
             object.world:addObj(newobj)
+        end
+        object.t = 1 -- NOT CLEARED BY WORLD
+    end
+    function object:handle(event)
+        if event.etype == "hit" then
+            if event.object.alias == 2 then
+                object.hp = object.hp - 1
+                object.world.log:add("Agent Got Hit HP:" .. tostring(object.hp))
+            end
         end
     end
     return object

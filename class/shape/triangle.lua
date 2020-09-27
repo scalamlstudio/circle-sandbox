@@ -4,7 +4,7 @@ local Triangle = {}
 
 function Triangle:new(world, config)
     local object = Object:new(world, config)
-    object.alias = object.alias or 3
+    object.alias = object.alias or 2
     object.shape = love.physics.newCircleShape(object.r)
     object.fixture = love.physics.newFixture(object.body, object.shape)
     object.fixture:setCategory(object.alias)

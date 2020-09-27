@@ -12,6 +12,8 @@ function Portal:get(world, conf)
     local object = Hexagon:new(world, conf)
     function object:update(dt)
     end
+    function object:handle(event)
+    end
     return object
 end
 
