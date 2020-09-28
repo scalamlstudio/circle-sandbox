@@ -11,6 +11,7 @@ function World:new(conf)
     world.h = love.graphics.getHeight()
     world.objs = world.objs or {}
     world.char = world.char or nil
+    world.port = 0
     function world:update(dt, paras)
         world.w = love.graphics.getWidth()
         world.h = love.graphics.getHeight()

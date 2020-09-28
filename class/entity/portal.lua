@@ -13,6 +13,11 @@ function Portal:get(world, conf)
     function object:update(dt)
     end
     function object:handle(event)
+        if event.etype == "hit" then
+            if event.object.o == "play" then
+                world.port = math.random(1, 2)
+            end
+        end
     end
     return object
 end
