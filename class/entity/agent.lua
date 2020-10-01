@@ -39,7 +39,7 @@ function Agent:get(world, conf)
         end
         object.x = object.body:getX()
         object.y = object.body:getY()
-        if object.world.keys['q'] then
+        if object.world.control:onSkill(1) then
             local conf = {id=1, alias=1, x=object.x, y=object.y, dx=dx, dy=dy}
             local newobj = Projectile:get(object.world, conf)
             object.world:addObj(newobj)

@@ -2,6 +2,7 @@
 Camera = require("general/camera")
 Panel = require("general/panel")
 Physics = require("general/physics")
+Control = require("general/control")
 -- Class
 World = require("class/world")
 Player = require("class/player")

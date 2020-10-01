@@ -17,9 +17,10 @@
 
 ### Todo
 
- - World Event and Object Effect
+ - Input Key Customization
  - Item System with Map / Module / Chip
  - User Carry Items with Different Stack Size
  - User Equip Modules with Module Type
  - Home Base with Item Storage
  - Crafting System
+ - Multi-Player
