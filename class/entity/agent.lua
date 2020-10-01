@@ -12,16 +12,21 @@ function Agent:get(world, conf)
     end
     local object = Circle:new(world, conf)
     function object:update(dt)
+        object.s = object.maxs
+        local neweffs = {}
         for ei, e in pairs(object.effs) do
             if e.etype == "tmat" then
                 local old_time = e.time
                 e.time = e.time - dt
-                if math.floor(old_time) > math.floor(e.time) then
+                if e.time > 0 then
                     object[e.tar] = object[e.tar] * e.mul
                     object[e.tar] = object[e.tar] + e.add
+                    table.insert(neweffs, e)
                 end
             end
         end
+        object.effs = neweffs
+        -- object.world.log:add(tostring(#neweffs))
         local dx = love.mouse.getX() - love.graphics.getWidth() / 2
         local dy = love.mouse.getY() - love.graphics.getHeight() / 2
         local distance = math.sqrt(dx ^ 2 + dy ^ 2)
@@ -34,7 +39,7 @@ function Agent:get(world, conf)
         end
         object.x = object.body:getX()
         object.y = object.body:getY()
-        if love.keyboard.isDown('q') then
+        if object.world.keys['q'] then
             local conf = {id=1, alias=1, x=object.x, y=object.y, dx=dx, dy=dy}
             local newobj = Projectile:get(object.world, conf)
             object.world:addObj(newobj)
@@ -48,7 +53,7 @@ function Agent:get(world, conf)
                 object[event.tar] = object[event.tar] * event.mul
                 object[event.tar] = object[event.tar] + event.add
             else
-                object.effs[#object.effs + 1] = event
+                table.insert(object.effs, event)
             end
         end
     end

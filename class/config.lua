@@ -9,10 +9,11 @@ function Config:newObj(config)
     config.y = config.y or 0 -- position y
     config.t = config.t or 1 -- life time
     config.s = config.s or 1000 -- speed
+    config.maxs = config.s -- max speed
     config.r = config.r or 1 -- radius
     config.m = config.m or 1 -- mass
     config.hp = config.hp or 1 -- health point
-    config.maxhp = config.hp or 1 -- max health point
+    config.maxhp = config.hp -- max health point
     config.effs = {}
     config.alias = config.alias or 3 -- default neutral
     config.o = config.o or "obst" -- object type

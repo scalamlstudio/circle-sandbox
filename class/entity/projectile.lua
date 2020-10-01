@@ -25,7 +25,11 @@ function Projectile:get(world, conf)
         if event.etype == "hit" then
             object.hp = object.hp - 1
             for ei, e in pairs(object.effect) do
-                event.object:handle(e)
+                effect = {}
+                for k, v in pairs(e) do
+                    effect[k] = v
+                end
+                event.object:handle(effect)
             end
         end
     end
