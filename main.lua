@@ -8,21 +8,24 @@ if player == nil then
     player = Player:new("Wei-Player")
     player:addChar(Char:new("Wei-Char"))
 end
--- Load World
+
+-- Load World and Constant Entities
 local StartTime = math.floor(love.timer.getTime())
 local panel = Panel:new(10, 10)
 local log = Panel:new(600, 10)
+local control = {}
 local world = {}
 local agent = {}
-local keys = {}
 
 function love.load()
     love.window.setTitle("CIRCLE")
     love.graphics.setBackgroundColor(0, 0, 0)
+    -- Init Control
+    control = Control:keyboard()
     -- Init World
     Physics:load()
     Shader:load()
-    world = World:new({id=2, log=log, keys=keys})
+    world = World:new({id=2, log=log, control=control})
     world:initLevel()
     -- Select Char
     agent = Agent:get(world, player.chars[1])
@@ -30,12 +33,6 @@ function love.load()
 end
 
 function love.update(dt)
-    -- Check Keys
-    for key, keytime in pairs(keys) do
-        if not love.keyboard.isDown(key) then
-            keys[key] = nil
-        end
-    end
     -- Switch World
     if world.port > 0 then
         world:clear()
@@ -45,7 +42,8 @@ function love.update(dt)
         agent:resetPosition()
         Camera:setObj(world, agent)
     end
-    -- Update World and Physics
+    -- Update Control, World and Physics
+    control:update(dt)
     world:update(dt)
     Physics:update(dt)
     -- Update Panel
@@ -73,9 +71,4 @@ function love.draw()
     -- Draw Panel
     panel:draw()
     log:draw()
-end
--- Control Key
-function love.keypressed(key, scancode, isrepeat)
-    keys[key] = love.timer.getTime()
-    if key == "escape" then love.event.quit() end
 end
