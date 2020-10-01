@@ -14,6 +14,7 @@ local panel = Panel:new(10, 10)
 local log = Panel:new(600, 10)
 local world = {}
 local agent = {}
+local keys = {}
 
 function love.load()
     love.window.setTitle("CIRCLE")
@@ -21,7 +22,7 @@ function love.load()
     -- Init World
     Physics:load()
     Shader:load()
-    world = World:new({id=2, log=log})
+    world = World:new({id=2, log=log, keys=keys})
     world:initLevel()
     -- Select Char
     agent = Agent:get(world, player.chars[1])
@@ -29,6 +30,12 @@ function love.load()
 end
 
 function love.update(dt)
+    -- Check Keys
+    for key, keytime in pairs(keys) do
+        if not love.keyboard.isDown(key) then
+            keys[key] = nil
+        end
+    end
     -- Switch World
     if world.port > 0 then
         world:clear()
@@ -41,12 +48,17 @@ function love.update(dt)
     -- Update World and Physics
     world:update(dt)
     Physics:update(dt)
-    -- Update Camera and Panel
+    -- Update Panel
     panel:update("Time:" .. tostring(math.floor(love.timer.getTime()) - StartTime) .. "  FPS:" .. tostring(love.timer.getFPS()))
-    panel:add("Window - W:" .. tostring(world.w) .. "  H:" .. tostring(world.h))
+    panel:add("Window - W:" .. tostring(world.w) .. "  H:" .. tostring(world.h) .. "  DT:" .. tostring(dt))
     panel:add("Circle - X:" .. tostring(agent.x) .. "  Y:" .. tostring(agent.y) .. "  HP:" .. tostring(agent.hp))
     panel:add("Obj Count:" .. tostring(#world.objs))
+    -- Update Log
     log:trim()
+    for n, a, b, c, d, e, f in love.event.poll() do
+        log:add("Event: " .. n .. " " .. tostring(a))
+    end
+    -- Update Camera
     Camera:follow(world, agent)
     Camera:update(dt)
 end
@@ -62,9 +74,8 @@ function love.draw()
     panel:draw()
     log:draw()
 end
-
+-- Control Key
 function love.keypressed(key, scancode, isrepeat)
-   if key == "escape" then
-      love.event.quit()
-   end
+    keys[key] = love.timer.getTime()
+    if key == "escape" then love.event.quit() end
 end

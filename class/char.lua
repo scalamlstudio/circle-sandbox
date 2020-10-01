@@ -5,7 +5,7 @@ local Char = {}
 function Char:new(name)
     local char = {}
     char.name = name
-    char.hp = 10
+    char.hp = 100
     char.str = 0
     char.dex = 0
     char.int = 0
