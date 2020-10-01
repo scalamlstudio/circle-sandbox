@@ -30,8 +30,10 @@ function Enemy:get(world, conf)
     end
     function object:handle(event)
         if event.etype == "hit" then
-            if event.object.alias == 1 and event.object.o == "proj" then
-                object.hp = object.hp - 1
+        elseif event.etype == "tmat" then
+            if event.time == 0 then
+                object[event.tar] = object[event.tar] * event.mul
+                object[event.tar] = object[event.tar] + event.add
             end
         end
     end

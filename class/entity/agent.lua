@@ -12,6 +12,16 @@ function Agent:get(world, conf)
     end
     local object = Circle:new(world, conf)
     function object:update(dt)
+        for ei, e in pairs(object.effs) do
+            if e.etype == "tmat" then
+                local old_time = e.time
+                e.time = e.time - dt
+                if math.floor(old_time) > math.floor(e.time) then
+                    object[e.tar] = object[e.tar] * e.mul
+                    object[e.tar] = object[e.tar] + e.add
+                end
+            end
+        end
         local dx = love.mouse.getX() - love.graphics.getWidth() / 2
         local dy = love.mouse.getY() - love.graphics.getHeight() / 2
         local distance = math.sqrt(dx ^ 2 + dy ^ 2)
@@ -33,9 +43,12 @@ function Agent:get(world, conf)
     end
     function object:handle(event)
         if event.etype == "hit" then
-            if event.object.alias == 2 then
-                object.hp = object.hp - 1
-                object.world.log:add("Agent Got Hit HP:" .. tostring(object.hp))
+        elseif event.etype == "tmat" then
+            if event.time == 0 then
+                object[event.tar] = object[event.tar] * event.mul
+                object[event.tar] = object[event.tar] + event.add
+            else
+                object.effs[#object.effs + 1] = event
             end
         end
     end

@@ -2,8 +2,8 @@
 
 local Projectile = {}
 local projmap = {}
-projmap[1] = {ptype="circle",r=3,s=600}
-projmap[2] = {ptype="triangle",r=3,s=200}
+projmap[1] = require("projectile/p1")
+projmap[2] = require("projectile/p2")
 function Projectile:get(world, conf)
     local newconf = projmap[conf['id']] or projmap[1]
     newconf.o = "proj"
@@ -24,6 +24,9 @@ function Projectile:get(world, conf)
     function object:handle(event)
         if event.etype == "hit" then
             object.hp = object.hp - 1
+            for ei, e in pairs(object.effect) do
+                event.object:handle(e)
+            end
         end
     end
     return object
